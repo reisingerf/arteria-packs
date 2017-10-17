@@ -47,7 +47,7 @@ workflows:
           body: '{"additional_args": "--sleep_time 200 --ignore-missing-bcls --ignore-missing-filter --ignore-missing-positions --ignore-missing-controls"}'
           method: "POST"
         publish:
-          bcl2fastq_job: <% task(bcl2fastq_conversion).result.body %>
+          bcl2fastq_job: <% task(bcl2fastq_conversion).result.body.job_id %>
         on-success:
           - bcl2fastq_status
 
