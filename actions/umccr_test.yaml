@@ -1,0 +1,29 @@
+---
+name: umccr_test
+description: >
+  Rsyncs a runfolder from the cache machine to the compute machine and kicks off the bcl2fastq converstion.
+enabled: false
+runner_type: mistral-v2
+entry_point: workflows/umccr_test.yaml
+pack: arteria
+parameters:
+  context:
+    default: {}
+    immutable: true
+    type: object
+  workflow:
+    default: arteria.umccr_test
+    immutable: true
+    type: string
+  runfolder:
+    required: true
+    type: string
+  source_host:
+    required: true
+    type: string
+  destination_host:
+    required: true
+    type: string
+  destination_path:
+    required: true
+    type: string

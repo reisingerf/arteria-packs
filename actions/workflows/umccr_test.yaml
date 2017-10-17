@@ -1,0 +1,41 @@
+version: "2.0" # mistral version
+name: arteria.umccr_test
+description: Rsyncs a runfolder from the cache machine to the compute machine and kicks off the bcl2fastq converstion.
+
+workflows:
+  main:
+    type: direct
+    input:
+      - runfolder
+      - source_host
+      - destination_host
+      - destination_path
+    output:
+      output_the_whole_workflow_context: <% $ %>
+
+    tasks:
+      ### GENERAL TASKS START ###
+      note_workflow_repo_version:
+        action: core.local
+        input:
+          cmd: git rev-parse HEAD
+          cwd: /opt/stackstorm/packs/arteria/
+        on-success:
+           - print_runfolder
+      ### GENERAL TASKS END ###
+
+      ### TRANSFER FILES START ###
+      print_runfolder:
+        action: core.local
+        input:
+          cmd: 'echo "Runfolder ready <% $.runfolder %>"'
+        on-success:
+          - rsync_to_destination
+
+      rsync_to_destination:
+        action: core.remote
+        input:
+          cmd: 'rsync -avzh <% $.runfolder %> <% $.destination_host %>:<% $.destination_path %>'
+          hosts: <% $.source_host %>
+
+      ### TRANSFER FILES END ###
