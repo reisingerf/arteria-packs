@@ -243,7 +243,7 @@
 
   archive_fastq_threshold:
     description: "Minimum number of fastq files to expect when creating archive. If we find less files than this then the action will fail"
-    type: "string"
+    type: "integer"
     required: false
 
   archive_python_path:
