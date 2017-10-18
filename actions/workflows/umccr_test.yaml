@@ -64,7 +64,7 @@ workflows:
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body.state %>
         on-success:
-          - bcl2fastq_status: "<% $.bcl2fastq_status = 'pending' %>"
+          - bcl2fastq_status: "<% $.bcl2fastq_status != 'done' %>"
           - report_final_result: "<% $.bcl2fastq_status = 'done' %>"
 
       report_final_result:
