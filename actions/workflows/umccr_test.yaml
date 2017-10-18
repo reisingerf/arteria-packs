@@ -65,7 +65,7 @@ workflows:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body.state %>
         on-success:
           - bcl2fastq_status: <% _.bcl2fastq_status != 'done' %>
-          - freport_final_resul: <% _.bcl2fastq_status = 'done' %>
+          - freport_final_result: <% _.bcl2fastq_status = 'done' %>
 
       report_final_result:
         action: core.local
