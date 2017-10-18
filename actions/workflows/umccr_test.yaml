@@ -56,6 +56,9 @@ workflows:
         input:
           url: 'http://<% $.destination_host %>:8888/api/1.0/status/<% $.bcl2fastq_job %>'
           method: "GET"
-        retry: count=10 delay=10 break-on: <% task(bcl2fastq_status).result.body,state = 'done' %>
+        retry:
+          count: 10
+          delay: 10
+          break-on: <% task(bcl2fastq_status).result.body,state = 'done' %>
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body %>
