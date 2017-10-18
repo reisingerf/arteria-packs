@@ -56,15 +56,16 @@ workflows:
         input:
           url: 'http://<% $.destination_host %>:8888/api/1.0/status/<% $.bcl2fastq_job %>'
           method: "GET"
-        retry:
-          count: 10
-          delay: 10
-          break-on: <% task(bcl2fastq_status).result.body.state = 'done' %>
-          continue-on: <% task(bcl2fastq_status).result.body.state != 'done' %>
+        # retry:
+        #   count: 10
+        #   delay: 10
+        #   break-on: <% task(bcl2fastq_status).result.body.state = 'done' %>
+        #   continue-on: <% task(bcl2fastq_status).result.body.state != 'done' %>
         publish:
-          bcl2fastq_status: <% task(bcl2fastq_status).result.body %>
+          bcl2fastq_status: <% task(bcl2fastq_status).result.body.state %>
         on-success:
-          - fail: "FAILED"
+          - bcl2fastq_status: <% _.bcl2fastq_status != 'done' %>
+          - freport_final_resul: <% _.bcl2fastq_status = 'done' %>
 
       report_final_result:
         action: core.local
