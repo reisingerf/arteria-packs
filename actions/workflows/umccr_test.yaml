@@ -37,6 +37,9 @@ workflows:
         input:
           cmd: 'rsync -avzh <% $.runfolder %> <% $.destination_host %>:<% $.destination_path %>'
           hosts: <% $.source_host %>
+        retry:
+          count: 3
+          delay: 10
         on-success:
           - bcl2fastq_conversion
 
