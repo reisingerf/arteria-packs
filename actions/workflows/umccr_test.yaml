@@ -53,6 +53,7 @@ workflows:
 
       bcl2fastq_status:
         action: core.http
+        wait-after: 30
         input:
           url: 'http://<% $.destination_host %>:8888/api/1.0/status/<% $.bcl2fastq_job %>'
           method: "GET"
