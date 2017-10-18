@@ -63,8 +63,8 @@ workflows:
           continue-on: <% task(bcl2fastq_status).result.body.state != 'done' %>
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body %>
-        on-complete:
-          - fail:
+        on-success:
+          - fail: "FAILED"
 
       report_final_result:
         action: core.local
