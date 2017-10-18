@@ -62,3 +62,10 @@ workflows:
           break-on: <% task(bcl2fastq_status).result.body.state = 'done' %>
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body %>
+        on-success:
+          - report_final_result
+
+      report_final_result:
+        action: core.local
+        input:
+          cmd: echo "<% $.bcl2fastq_status %>"
