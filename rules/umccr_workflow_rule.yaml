@@ -1,6 +1,6 @@
 ---
 
-name: "arteria.umccr_workflow_test"
+name: "umccr_workflow_test"
 pack: "arteria"
 description: "Runs a simplified UMCCR workflow for testing."
 enabled: false
