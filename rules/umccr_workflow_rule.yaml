@@ -1,0 +1,18 @@
+---
+
+name: "arteria.umccr_workflow_test"
+pack: "arteria"
+description: "Runs a simplified UMCCR workflow for testing."
+enabled: false
+
+trigger:
+    type: "arteria.incoming_ready"
+
+action:
+    ref: "arteria.umccr_test"
+    parameters:
+        destination_host: "bcl2fastq_ws"
+        destination_path: "/opt/runfolder"
+        runfolder: "{{ trigger.runfolder }}"
+        runfolder_name: "{{ trigger.runfolder_name }}"
+        source_host: "runfolder_ws"
