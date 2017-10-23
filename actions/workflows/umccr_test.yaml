@@ -46,7 +46,7 @@ workflows:
       bcl2fastq_conversion:
         action: core.http
         input:
-          url: 'http://<% $.destination_host %>:8888/api/1.0/start/<% $.runfolder_name %>'
+          url: 'http://<% $.destination_host %>/api/1.0/start/<% $.runfolder_name %>'
           body: '{"additional_args": "--sleep_time 200 --ignore-missing-bcls --ignore-missing-filter --ignore-missing-positions --ignore-missing-controls"}'
           method: "POST"
         publish:
@@ -58,7 +58,7 @@ workflows:
         action: core.http
         wait-after: 30
         input:
-          url: 'http://<% $.destination_host %>:8888/api/1.0/status/<% $.bcl2fastq_job %>'
+          url: 'http://<% $.destination_host %>/api/1.0/status/<% $.bcl2fastq_job %>'
           method: "GET"
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body.state %>
