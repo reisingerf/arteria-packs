@@ -47,7 +47,7 @@ workflows:
       update_runfolder_status:
         action: core.http
         input:
-          url: 'http://<% $.runfolder_host %>:/api/1.0/srunfolders/path<% $.runfolder %>'
+          url: 'http://<% $.runfolder_host %>:/api/1.0/runfolders/path<% $.runfolder %>'
           body: '{"state": "done"}'
           method: "POST"
 
