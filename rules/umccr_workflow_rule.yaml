@@ -11,8 +11,8 @@ trigger:
 action:
     ref: "arteria.umccr_test"
     parameters:
-        destination_host: "bcl2fastq_ws"
-        destination_path: "/opt/runfolder"
+        bcl2fastq_host: "bcl2fastq_ws"
+        bcl2fastq_dest_path: "/opt/runfolder"
         runfolder: "{{ trigger.runfolder }}"
         runfolder_name: "{{ trigger.runfolder_name }}"
-        source_host: "runfolder_ws"
+        runfolder_host: "runfolder_ws"
