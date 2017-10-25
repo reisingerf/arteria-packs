@@ -8,9 +8,9 @@ workflows:
     input:
       - runfolder
       - runfolder_name
-      - source_host
-      - destination_host
-      - destination_path
+      - runfolder_host
+      - bcl2fastq_host
+      - bcl2fastq_dest_path
     output:
       output_the_whole_workflow_context: <% $ %>
 
@@ -35,18 +35,26 @@ workflows:
       rsync_to_destination:
         action: core.remote
         input:
-          cmd: 'rsync -avzh <% $.runfolder %> <% $.destination_host %>:<% $.destination_path %>'
-          hosts: <% $.source_host %>
+          cmd: 'rsync -avzh <% $.runfolder %> <% $.bcl2fastq_host %>:<% $.bcl2fastq_dest_path %>'
+          hosts: <% $.runfolder_host %>
         retry:
           count: 3
           delay: 10
         on-success:
           - bcl2fastq_conversion
+          - update_runfolder_status
+
+      update_runfolder_status:
+        action: core.http
+        input:
+          url: 'http://<% $.runfolder_host %>:/api/1.0/srunfolders/path<% $.runfolder %>'
+          body: '{"state": "done"}'
+          method: "POST"
 
       bcl2fastq_conversion:
         action: core.http
         input:
-          url: 'http://<% $.destination_host %>/api/1.0/start/<% $.runfolder_name %>'
+          url: 'http://<% $.bcl2fastq_host %>/api/1.0/start/<% $.runfolder_name %>'
           body: '{"additional_args": "--sleep_time 200 --ignore-missing-bcls --ignore-missing-filter --ignore-missing-positions --ignore-missing-controls"}'
           method: "POST"
         publish:
@@ -58,7 +66,7 @@ workflows:
         action: core.http
         wait-after: 30
         input:
-          url: 'http://<% $.destination_host %>/api/1.0/status/<% $.bcl2fastq_job %>'
+          url: 'http://<% $.bcl2fastq_host %>/api/1.0/status/<% $.bcl2fastq_job %>'
           method: "GET"
         publish:
           bcl2fastq_status: <% task(bcl2fastq_status).result.body.state %>

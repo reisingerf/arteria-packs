@@ -21,12 +21,12 @@ parameters:
   runfolder_name:
     required: true
     type: string
-  source_host:
+  runfolder_host:
     required: true
     type: string
-  destination_host:
+  bcl2fastq_host:
     required: true
     type: string
-  destination_path:
+  bcl2fastq_dest_path:
     required: true
     type: string
